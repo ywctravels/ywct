@@ -1,1 +1,151 @@
+<!DOCTYPE html>
+<html>
 
+<head>
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+
+<title>Yes We Care Travels - Voucher Generator</title>
+
+<link rel="stylesheet" href="style.css">
+
+</head>
+
+<body>
+
+<div class="container">
+
+<h1>Yes We Care Travels</h1>
+<h3>Voucher Generator</h3>
+
+<hr>
+
+<h2>Guest Details</h2>
+
+<input id="guestName" placeholder="Guest Name">
+
+<input id="mobile" placeholder="Mobile Number">
+
+<input id="email" placeholder="Email">
+
+<input id="adults" placeholder="Adults">
+
+<input id="children" placeholder="Children">
+
+
+<h2>Tour Dates</h2>
+
+<label>Tour Start</label>
+<input type="date" id="tourStart">
+
+<label>Tour End</label>
+<input type="date" id="tourEnd">
+
+
+<h2>Hotel Details</h2>
+
+<input id="city" placeholder="City">
+
+<input id="hotel" placeholder="Hotel Name">
+
+<label>Checkin</label>
+<input type="date" id="checkin">
+
+<label>Checkout</label>
+<input type="date" id="checkout">
+
+<input id="roomType" placeholder="Room Type">
+
+
+<select id="mealPlan">
+
+<option value="">Select Meal Plan</option>
+
+<option>EP</option>
+<option>CP</option>
+<option>MAP</option>
+<option>AP</option>
+
+</select>
+
+
+<h2>Vehicle Details</h2>
+
+<input id="vehicleType" placeholder="Vehicle Type">
+
+<input id="vehicleModel" placeholder="Vehicle Model">
+
+<input id="vehicleNumber" placeholder="Vehicle Number">
+
+<input id="driverName" placeholder="Driver Name">
+
+<input id="driverMobile" placeholder="Driver Mobile">
+
+
+<h2>Payment</h2>
+
+<input id="totalCost" placeholder="Total Package Cost">
+
+<input id="advancePaid" placeholder="Advance Paid">
+
+
+<select id="paymentMode">
+
+<option>Cash</option>
+<option>UPI</option>
+<option>Bank Transfer</option>
+
+</select>
+
+<textarea id="notes" placeholder="Notes"></textarea>
+
+
+<button id="generateBtn" onclick="generateVoucher()">
+Generate Voucher
+</button>
+
+<p id="statusMsg"></p>
+
+
+<hr>
+
+
+<div id="voucherPreview">
+
+<h2>Travel Voucher</h2>
+
+<p>Voucher No : <span id="voucherNo"></span></p>
+
+<p>Guest : <span id="vGuest"></span></p>
+
+<p>Mobile : <span id="vMobile"></span></p>
+
+<p>Email : <span id="vEmail"></span></p>
+
+<p>Tour Start : <span id="vStart"></span></p>
+
+<p>Tour End : <span id="vEnd"></span></p>
+
+<p>Vehicle : <span id="vVehicle"></span></p>
+
+<p>Total : ₹<span id="vTotal"></span></p>
+
+<p>Advance : ₹<span id="vAdvance"></span></p>
+
+
+<button onclick="printVoucher()">
+
+Print / Save PDF
+
+</button>
+
+</div>
+
+</div>
+
+
+<script src="app.js"></script>
+
+</body>
+</html>
