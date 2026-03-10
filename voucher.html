@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Voucher Generator</title>
+
+<style>
+
+body{
+font-family:Arial;
+background:#f4f6fb;
+padding:20px;
+}
+
+.container{
+background:white;
+padding:25px;
+border-radius:8px;
+max-width:800px;
+margin:auto;
+}
+
+.header{
+text-align:center;
+border-bottom:2px solid #eee;
+padding-bottom:10px;
+margin-bottom:20px;
+}
+
+.header h1{
+margin:0;
+}
+
+.logo{
+height:50px;
+}
+
+input{
+width:100%;
+padding:10px;
+border:1px solid #ddd;
+border-radius:6px;
+}
+
+button{
+margin-top:10px;
+padding:10px;
+background:#f5b400;
+border:none;
+width:100%;
+font-weight:bold;
+cursor:pointer;
+}
+
+table{
+width:100%;
+margin-top:20px;
+border-collapse:collapse;
+}
+
+th,td{
+border:1px solid #ddd;
+padding:10px;
+text-align:left;
+}
+
+th{
+background:#4b3fd6;
+color:white;
+}
+
+.print-btn{
+background:#28a745;
+margin-top:20px;
+}
+
+</style>
+
+</head>
+
+<body>
+
+<div class="container" id="voucher">
+
+<div class="header">
+
+<h1>Yes We Care Travels</h1>
+<p>Operated by P&R Hospitality Management Services</p>
+
+</div>
+
+<label>Enter Booking ID</label>
+<input id="booking_id">
+
+<button onclick="loadVoucher()">Generate Voucher</button>
+
+<div id="voucherData"></div>
+
+<button class="print-btn" onclick="window.print()">Download / Print PDF</button>
+
+</div>
+
+<script>
+
+const API_URL="https://script.google.com/macros/s/AKfycbyYeZMcv92PvMShxHL5e0HEmddLMFsZY4AnPZAlNrgXQVXLh5nlCCgsqHK5mXwYcGe7mw/exec";
+
+function loadVoucher(){
+
+let bookingId=document.getElementById("booking_id").value;
+
+fetch(API_URL+"?action=getVoucher&booking_id="+bookingId)
+
+.then(res=>res.json())
+
+.then(data=>{
+
+let booking=data.booking;
+let hotels=data.hotels;
+
+let hotelRows="";
+
+hotels.forEach(h=>{
+
+hotelRows+=`
+<tr>
+<td>${h.city}</td>
+<td>${h.hotel}</td>
+<td>${h.checkin}</td>
+<td>${h.checkout}</td>
+<td>${h.nights}</td>
+<td>${h.meal}</td>
+</tr>
+`;
+
+});
+
+document.getElementById("voucherData").innerHTML=`
+
+<h3>Guest Details</h3>
+
+<p><b>Name:</b> ${booking.guest_name}</p>
+<p><b>Mobile:</b> ${booking.mobile}</p>
+<p><b>Tour Start:</b> ${booking.tour_start}</p>
+<p><b>Tour End:</b> ${booking.tour_end}</p>
+<p><b>Voucher No:</b> ${booking.voucher}</p>
+
+<h3>Hotel Details</h3>
+
+<table>
+
+<tr>
+<th>City</th>
+<th>Hotel</th>
+<th>Checkin</th>
+<th>Checkout</th>
+<th>Nights</th>
+<th>Meal</th>
+</tr>
+
+${hotelRows}
+
+</table>
+
+`;
+
+});
+
+}
+
+</script>
+
+</body>
+</html>
