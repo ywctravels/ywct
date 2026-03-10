@@ -2,13 +2,13 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>Yes We Care Travels - Dashboard</title>
+<title>Yes We Care Travels CRM</title>
 
 <style>
 
 body{
-font-family:Arial;
 margin:0;
+font-family:Arial;
 background:#f4f6fb;
 }
 
@@ -17,19 +17,34 @@ background:#f4f6fb;
 .header{
 background:#4b3fd6;
 color:white;
-padding:15px;
+padding:10px 20px;
 display:flex;
 align-items:center;
 justify-content:space-between;
 }
 
-.header h1{
-font-size:20px;
-margin:0;
+.logo-left{
+display:flex;
+align-items:center;
 }
 
-.header span{
-font-size:12px;
+.logo-left img{
+height:45px;
+margin-right:10px;
+}
+
+.logo-right img{
+height:35px;
+}
+
+.company-text h2{
+margin:0;
+font-size:18px;
+}
+
+.company-text p{
+margin:0;
+font-size:11px;
 opacity:0.8;
 }
 
@@ -37,15 +52,14 @@ opacity:0.8;
 
 .layout{
 display:flex;
-height:calc(100vh - 60px);
+height:calc(100vh - 65px);
 }
 
 /* SIDEBAR */
 
 .sidebar{
 width:220px;
-background:#1e1e2f;
-color:white;
+background:#1f1f2e;
 padding:20px;
 }
 
@@ -57,23 +71,21 @@ color:white;
 padding:12px;
 text-align:left;
 cursor:pointer;
-border-radius:5px;
+border-radius:6px;
 margin-bottom:8px;
+font-size:14px;
 }
 
 .sidebar button:hover{
-background:#34345c;
+background:#333356;
 }
 
 /* CONTENT */
 
 .content{
 flex:1;
-padding:20px;
-background:#f4f6fb;
+padding:15px;
 }
-
-/* iframe */
 
 iframe{
 width:100%;
@@ -89,10 +101,22 @@ border-radius:8px;
 <body>
 
 <div class="header">
-<div>
-<h1>Yes We Care Travels</h1>
-<span>Operated by P&R Hospitality Management Services</span>
+
+<div class="logo-left">
+
+<img src="images/logo-yes-we-care-travels-1.png">
+
+<div class="company-text">
+<h2>Yes We Care Travels</h2>
+<p>Operated by P&R Hospitality Management Services</p>
 </div>
+
+</div>
+
+<div class="logo-right">
+<img src="images/logo-pr-hospitality.png">
+</div>
+
 </div>
 
 <div class="layout">
@@ -100,8 +124,6 @@ border-radius:8px;
 <div class="sidebar">
 
 <button onclick="loadPage('booking.html')">Create Booking</button>
-
-<button onclick="loadPage('add-hotel.html')">Add Hotel</button>
 
 <button onclick="loadPage('customer-payment.html')">Customer Payment</button>
 
@@ -124,9 +146,7 @@ border-radius:8px;
 <script>
 
 function loadPage(page){
-
 document.getElementById("frame").src = page;
-
 }
 
 </script>
