@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Assign Hotel</title>
+
+<style>
+
+body{
+font-family:Arial;
+padding:20px;
+}
+
+input,select{
+width:100%;
+padding:10px;
+margin-top:5px;
+margin-bottom:10px;
+border:1px solid #ddd;
+border-radius:6px;
+}
+
+.row{
+display:grid;
+grid-template-columns:1fr 1fr;
+gap:10px;
+}
+
+button{
+background:#f5b400;
+border:none;
+padding:12px;
+width:100%;
+font-weight:bold;
+cursor:pointer;
+}
+
+#msg{
+margin-top:10px;
+}
+
+</style>
+
+</head>
+
+<body>
+
+<h2>Assign Hotel To Booking</h2>
+
+<label>Booking ID</label>
+<input id="booking_id">
+
+<label>City</label>
+<input id="city">
+
+<label>Hotel Name</label>
+<input id="hotel_name">
+
+<div class="row">
+
+<div>
+<label>Room Type</label>
+<input id="room_type">
+</div>
+
+<div>
+<label>Meal Plan</label>
+<select id="meal_plan">
+<option>EP</option>
+<option>CP</option>
+<option>MAP</option>
+<option>AP</option>
+</select>
+</div>
+
+</div>
+
+<div class="row">
+
+<div>
+<label>Checkin</label>
+<input type="date" id="checkin">
+</div>
+
+<div>
+<label>Checkout</label>
+<input type="date" id="checkout">
+</div>
+
+</div>
+
+<label>Nights</label>
+<input id="nights">
+
+<button onclick="assignHotel()">Assign Hotel</button>
+
+<div id="msg"></div>
+
+<script>
+
+const API_URL="YOUR_API_URL";
+
+function assignHotel(){
+
+const data={
+
+action:"addHotel",
+
+booking_id:document.getElementById("booking_id").value,
+
+city:document.getElementById("city").value,
+
+hotel_name:document.getElementById("hotel_name").value,
+
+room_type:document.getElementById("room_type").value,
+
+meal_plan:document.getElementById("meal_plan").value,
+
+checkin_date:document.getElementById("checkin").value,
+
+checkout_date:document.getElementById("checkout").value,
+
+nights:document.getElementById("nights").value,
+
+auto_rate:"",
+final_rate:"",
+total_cost:""
+
+};
+
+fetch(API_URL,{
+method:"POST",
+body:JSON.stringify(data)
+})
+.then(res=>res.json())
+.then(res=>{
+document.getElementById("msg").innerHTML="Hotel Assigned ✔";
+});
+
+}
+
+</script>
+
+</body>
+</html>
