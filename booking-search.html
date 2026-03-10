@@ -8,24 +8,32 @@
 
 body{
 font-family:Arial;
+background:#f4f6fb;
 padding:20px;
+}
+
+.container{
+background:white;
+padding:20px;
+border-radius:8px;
 }
 
 input{
 width:100%;
 padding:10px;
+margin-top:10px;
 border:1px solid #ddd;
-border-radius:6px;
+border-radius:5px;
 }
 
 button{
 margin-top:10px;
 padding:10px;
-background:#f5b400;
+background:#4b3fd6;
+color:white;
 border:none;
-width:100%;
-font-weight:bold;
 cursor:pointer;
+width:100%;
 }
 
 table{
@@ -46,10 +54,11 @@ color:white;
 }
 
 </style>
-
 </head>
 
 <body>
+
+<div class="container">
 
 <h2>Search Booking</h2>
 
@@ -57,10 +66,9 @@ color:white;
 
 <button onclick="searchBooking()">Search</button>
 
-<table id="result">
+<table>
 
 <thead>
-
 <tr>
 <th>Booking ID</th>
 <th>Guest</th>
@@ -68,23 +76,25 @@ color:white;
 <th>Tour Start</th>
 <th>Tour End</th>
 <th>Status</th>
+<th>Open</th>
 </tr>
-
 </thead>
 
-<tbody></tbody>
+<tbody id="results"></tbody>
 
 </table>
 
+</div>
+
 <script>
 
-const API_URL="https://script.google.com/macros/s/AKfycbyYeZMcv92PvMShxHL5e0HEmddLMFsZY4AnPZAlNrgXQVXLh5nlCCgsqHK5mXwYcGe7mw/exec";
+const API="YOUR_API_URL";
 
 function searchBooking(){
 
-let q=document.getElementById("query").value;
+const q=document.getElementById("query").value;
 
-fetch(API_URL+"?action=searchBooking&query="+q)
+fetch(API+"?action=searchBooking&query="+q)
 
 .then(res=>res.json())
 
@@ -96,20 +106,34 @@ data.forEach(b=>{
 
 html+=`
 <tr>
+
 <td>${b.booking_id}</td>
 <td>${b.guest}</td>
 <td>${b.mobile}</td>
 <td>${b.tour_start}</td>
 <td>${b.tour_end}</td>
 <td>${b.status}</td>
+
+<td>
+<button onclick="openTrip('${b.booking_id}')">
+Open
+</button>
+</td>
+
 </tr>
 `;
 
 });
 
-document.querySelector("#result tbody").innerHTML=html;
+document.getElementById("results").innerHTML=html;
 
 });
+
+}
+
+function openTrip(id){
+
+window.location="trip-manager.html?booking="+id;
 
 }
 
