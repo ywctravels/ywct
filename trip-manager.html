@@ -1,10 +1,7 @@
-<!DOCTYPE html>
-<html>
+<!DOCTYPE html><html>
 <head>
 <meta charset="UTF-8">
-<title>Trip Manager</title>
-
-<style>
+<title>Trip Manager</title><style>
 
 body{
 font-family:Arial;
@@ -35,7 +32,7 @@ margin-top:10px;
 
 th,td{
 border:1px solid #ddd;
-padding:10px;
+padding:8px;
 text-align:left;
 }
 
@@ -46,17 +43,16 @@ color:white;
 
 input,select{
 padding:8px;
-margin-top:5px;
 width:100%;
+margin-top:5px;
 border:1px solid #ccc;
 border-radius:4px;
 }
 
 button{
+padding:6px 10px;
 background:#f5b400;
 border:none;
-padding:10px;
-margin-top:10px;
 cursor:pointer;
 }
 
@@ -64,142 +60,62 @@ button:hover{
 background:#e0a800;
 }
 
-</style>
+.danger{
+background:#e53935;
+color:white;
+}
 
-</head>
-
-<body>
-
-<div class="container">
-
-<h2>Trip Manager</h2>
-
-<div id="guest"></div>
-
-<!-- HOTELS -->
-
-<div class="section">
-
-<h3>Hotels</h3>
-
-<table>
-
-<thead>
+</style></head><body><div class="container"><h2>Trip Manager</h2><div id="guest"></div><!-- BOOKING ACTIONS --><div class="section"><h3>Booking Actions</h3><button onclick="cancelBooking()" class="danger">
+Cancel Booking
+</button><input id="cancel_charge" placeholder="Cancellation Charge"></div><!-- HOTELS --><div class="section"><h3>Hotels</h3><table><thead>
 <tr>
 <th>City</th>
 <th>Hotel</th>
 <th>Checkin</th>
-<th>Checkout</th>
 <th>Nights</th>
-<th>Meal</th>
+<th>Edit</th>
+<th>Delete</th>
 </tr>
-</thead>
-
-<tbody id="hotelList"></tbody>
-
-</table>
-
-<h4>Add Hotel</h4>
-
-<input id="city" placeholder="City">
-
-<input id="hotel_name" placeholder="Hotel Name">
-
-<input id="room_type" placeholder="Room Type">
-
-<select id="meal_plan">
+</thead><tbody id="hotelList"></tbody></table><h4>Add Hotel</h4><input id="city" placeholder="City"><input id="hotel_name" placeholder="Hotel"><input type="date" id="checkin"><input id="nights" placeholder="Nights"><select id="meal_plan">
 <option>EP</option>
 <option>CP</option>
 <option>MAP</option>
 <option>AP</option>
-</select>
+</select><button onclick="addHotel()">Add Hotel</button>
 
-<input type="date" id="checkin">
-
-<input type="date" id="checkout">
-
-<input id="nights" placeholder="Nights">
-
-<button onclick="addHotel()">Add Hotel</button>
-
-</div>
-
-<!-- VEHICLES -->
-
-<div class="section">
-
-<h3>Vehicles</h3>
-
-<table>
-
-<thead>
+</div><!-- VEHICLES --><div class="section"><h3>Vehicles</h3><table><thead>
 <tr>
 <th>Vehicle</th>
 <th>Driver</th>
-<th>Phone</th>
 <th>Pickup</th>
+<th>Edit</th>
+<th>Delete</th>
 </tr>
-</thead>
+</thead><tbody id="vehicleList"></tbody></table><h4>Assign Vehicle</h4><select id="vehicleSelect"></select>
 
-<tbody id="vehicleList"></tbody>
+<input type="date" id="pickup_date"><button onclick="assignVehicle()">Assign Vehicle</button>
 
-</table>
-
-<h4>Assign Vehicle</h4>
-
-<select id="vehicleSelect"></select>
-
-<input type="date" id="pickup_date">
-
-<button onclick="assignVehicle()">Assign Vehicle</button>
-
-</div>
-
-<!-- PAYMENTS -->
-
-<div class="section">
-
-<h3>Customer Payments</h3>
-
-<table>
-
-<thead>
+</div><!-- PAYMENTS --><div class="section"><h3>Customer Payments</h3><table><thead>
 <tr>
 <th>Date</th>
 <th>Amount</th>
 <th>Mode</th>
 </tr>
-</thead>
+</thead><tbody id="paymentList"></tbody></table></div><!-- VOUCHER --><div class="section"><h3>Voucher</h3><button onclick="openVoucher()">Open Voucher</button>
 
-<tbody id="paymentList"></tbody>
-
-</table>
-
-</div>
-
-<!-- VOUCHER -->
-
-<div class="section">
-
-<h3>Voucher</h3>
-
-<button onclick="openVoucher()">Generate Voucher</button>
-
-</div>
-
-</div>
-
-<script>
+</div></div><script>
 
 const API="https://script.google.com/macros/s/AKfycbyYeZMcv92PvMShxHL5e0HEmddLMFsZY4AnPZAlNrgXQVXLh5nlCCgsqHK5mXwYcGe7mw/exec";
 
-const urlParams = new URLSearchParams(window.location.search);
-const bookingId = urlParams.get("booking");
+const params=new URLSearchParams(window.location.search);
+const bookingId=params.get("booking");
 
 loadBooking();
 loadHotels();
 loadVehicles();
 loadTransport();
+
+/* BOOKING DETAILS */
 
 function loadBooking(){
 
@@ -210,15 +126,19 @@ fetch(API+"?action=getBooking&booking_id="+bookingId)
 .then(data=>{
 
 document.getElementById("guest").innerHTML=`
-<b>Booking ID:</b> ${data[0]} <br>
+
+<b>Booking:</b> ${data[0]} <br>
 <b>Guest:</b> ${data[3]} <br>
 <b>Mobile:</b> ${data[4]} <br>
 <b>Tour:</b> ${data[8]} → ${data[9]}
+
 `;
 
 });
 
 }
+
+/* HOTELS */
 
 function loadHotels(){
 
@@ -237,9 +157,18 @@ html+=`
 <td>${h.city}</td>
 <td>${h.hotel}</td>
 <td>${h.checkin}</td>
-<td>${h.checkout}</td>
 <td>${h.nights}</td>
-<td>${h.meal}</td>
+
+<td>
+<button onclick="editHotel('${h.id}')">Edit</button>
+</td>
+
+<td>
+<button class="danger" onclick="deleteHotel('${h.id}')">
+Delete
+</button>
+</td>
+
 </tr>
 `;
 
@@ -251,6 +180,8 @@ document.getElementById("hotelList").innerHTML=html;
 
 }
 
+/* ADD HOTEL */
+
 function addHotel(){
 
 fetch(API,{
@@ -258,23 +189,12 @@ method:"POST",
 body:JSON.stringify({
 
 action:"addHotel",
-
 booking_id:bookingId,
-
-city:document.getElementById("city").value,
-
-hotel_name:document.getElementById("hotel_name").value,
-
-room_type:document.getElementById("room_type").value,
-
-meal_plan:document.getElementById("meal_plan").value,
-
-checkin_date:document.getElementById("checkin").value,
-
-checkout_date:document.getElementById("checkout").value,
-
-nights:document.getElementById("nights").value,
-
+city:city.value,
+hotel_name:hotel_name.value,
+checkin_date:checkin.value,
+nights:nights.value,
+meal_plan:meal_plan.value,
 auto_rate:"",
 final_rate:"",
 total_cost:""
@@ -282,14 +202,31 @@ total_cost:""
 })
 
 }).then(()=>{
-
 alert("Hotel Added");
-
 loadHotels();
-
 });
 
 }
+
+/* DELETE HOTEL */
+
+function deleteHotel(id){
+
+if(!confirm("Delete this hotel?")) return;
+
+fetch(API,{
+method:"POST",
+body:JSON.stringify({
+action:"deleteHotel",
+id:id
+})
+}).then(()=>{
+loadHotels();
+});
+
+}
+
+/* VEHICLES */
 
 function loadVehicles(){
 
@@ -309,55 +246,42 @@ ${v.vehicle_number} - ${v.driver_name}
 
 });
 
-document.getElementById("vehicleSelect").innerHTML=html;
+vehicleSelect.innerHTML=html;
 
 });
 
 }
 
+/* ASSIGN VEHICLE */
+
 function assignVehicle(){
 
-const vehicle=document.getElementById("vehicleSelect");
-
-const text=vehicle.options[vehicle.selectedIndex].text;
-
-const number=text.split(" - ")[0];
-
-const driver=text.split(" - ")[1];
+const v=vehicleSelect.options[vehicleSelect.selectedIndex].text;
 
 fetch(API,{
 method:"POST",
 body:JSON.stringify({
 
 action:"assignVehicle",
-
 booking_id:bookingId,
-
-vehicle_id:vehicle.value,
-
-vehicle_number:number,
-
-driver_name:driver,
-
+vehicle_id:vehicleSelect.value,
+vehicle_number:v.split(" - ")[0],
+driver_name:v.split(" - ")[1],
 driver_phone:"",
-
-pickup_date:document.getElementById("pickup_date").value,
-
+pickup_date:pickup_date.value,
 drop_date:"",
-
 remarks:""
 
 })
 
 }).then(()=>{
-
 alert("Vehicle Assigned");
-
 loadTransport();
-
 });
 
 }
+
+/* LOAD TRANSPORT */
 
 function loadTransport(){
 
@@ -375,18 +299,55 @@ html+=`
 <tr>
 <td>${v.vehicle_number}</td>
 <td>${v.driver_name}</td>
-<td>${v.driver_phone}</td>
 <td>${v.pickup_date}</td>
+
+<td>
+<button onclick="editVehicle('${v.id}')">Edit</button>
+</td>
+
+<td>
+<button class="danger"
+onclick="deleteVehicle('${v.id}')">
+Delete
+</button>
+</td>
+
 </tr>
 `;
 
 });
 
-document.getElementById("vehicleList").innerHTML=html;
+vehicleList.innerHTML=html;
 
 });
 
 }
+
+/* BOOKING CANCEL */
+
+function cancelBooking(){
+
+const charge=document.getElementById("cancel_charge").value;
+
+if(!confirm("Cancel booking?")) return;
+
+fetch(API,{
+method:"POST",
+body:JSON.stringify({
+
+action:"cancelBooking",
+booking_id:bookingId,
+charge:charge
+
+})
+
+}).then(()=>{
+alert("Booking Cancelled");
+});
+
+}
+
+/* VOUCHER */
 
 function openVoucher(){
 
@@ -394,7 +355,5 @@ window.open("voucher.html?booking_id="+bookingId);
 
 }
 
-</script>
-
-</body>
+</script></body>
 </html>
