@@ -2,16 +2,134 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>Yes We Care Travels</title>
+<title>Yes We Care Travels - Dashboard</title>
+
+<style>
+
+body{
+font-family:Arial;
+margin:0;
+background:#f4f6fb;
+}
+
+/* HEADER */
+
+.header{
+background:#4b3fd6;
+color:white;
+padding:15px;
+display:flex;
+align-items:center;
+justify-content:space-between;
+}
+
+.header h1{
+font-size:20px;
+margin:0;
+}
+
+.header span{
+font-size:12px;
+opacity:0.8;
+}
+
+/* LAYOUT */
+
+.layout{
+display:flex;
+height:calc(100vh - 60px);
+}
+
+/* SIDEBAR */
+
+.sidebar{
+width:220px;
+background:#1e1e2f;
+color:white;
+padding:20px;
+}
+
+.sidebar button{
+width:100%;
+background:none;
+border:none;
+color:white;
+padding:12px;
+text-align:left;
+cursor:pointer;
+border-radius:5px;
+margin-bottom:8px;
+}
+
+.sidebar button:hover{
+background:#34345c;
+}
+
+/* CONTENT */
+
+.content{
+flex:1;
+padding:20px;
+background:#f4f6fb;
+}
+
+/* iframe */
+
+iframe{
+width:100%;
+height:100%;
+border:none;
+background:white;
+border-radius:8px;
+}
+
+</style>
 </head>
 
 <body>
 
-<h2>Yes We Care Travels Voucher System</h2>
+<div class="header">
+<div>
+<h1>Yes We Care Travels</h1>
+<span>Operated by P&R Hospitality Management Services</span>
+</div>
+</div>
 
-<a href="voucher.html">
-Open Voucher Generator
-</a>
+<div class="layout">
+
+<div class="sidebar">
+
+<button onclick="loadPage('booking.html')">Create Booking</button>
+
+<button onclick="loadPage('add-hotel.html')">Add Hotel</button>
+
+<button onclick="loadPage('customer-payment.html')">Customer Payment</button>
+
+<button onclick="loadPage('supplier-payment.html')">Supplier Payment</button>
+
+<button onclick="loadPage('voucher.html')">Generate Voucher</button>
+
+<button onclick="loadPage('report.html')">Reports</button>
+
+</div>
+
+<div class="content">
+
+<iframe id="frame"></iframe>
+
+</div>
+
+</div>
+
+<script>
+
+function loadPage(page){
+
+document.getElementById("frame").src = page;
+
+}
+
+</script>
 
 </body>
 </html>
