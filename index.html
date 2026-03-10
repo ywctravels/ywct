@@ -1,15 +1,48 @@
-<!DOCTYPE html>
-<html>
+<!DOCTYPE html><html>
 <head>
 <meta charset="UTF-8">
-<title>Yes We Care Travels CRM</title>
-
-<style>
+<title>Yes We Care Travels CRM</title><style>
 
 body{
 margin:0;
 font-family:Arial;
 background:#f4f6fb;
+}
+
+/* LOGIN */
+
+#loginBox{
+width:320px;
+margin:120px auto;
+background:white;
+padding:25px;
+border-radius:8px;
+box-shadow:0 10px 25px rgba(0,0,0,0.1);
+text-align:center;
+}
+
+#loginBox input{
+width:100%;
+padding:10px;
+margin-top:10px;
+border:1px solid #ddd;
+border-radius:6px;
+}
+
+#loginBox button{
+margin-top:15px;
+padding:10px;
+width:100%;
+background:#4b3fd6;
+color:white;
+border:none;
+cursor:pointer;
+}
+
+#msg{
+margin-top:10px;
+font-size:13px;
+color:red;
 }
 
 /* HEADER */
@@ -55,8 +88,6 @@ display:flex;
 height:calc(100vh - 65px);
 }
 
-/* SIDEBAR */
-
 .sidebar{
 width:220px;
 background:#1f1f2e;
@@ -80,8 +111,6 @@ font-size:14px;
 background:#333356;
 }
 
-/* CONTENT */
-
 .content{
 flex:1;
 padding:15px;
@@ -95,67 +124,144 @@ background:white;
 border-radius:8px;
 }
 
-</style>
-</head>
+.logout{
+background:#f44336;
+color:white;
+}
 
-<body>
+</style></head><body><!-- LOGIN BOX --><div id="loginBox"><h2>Login</h2><input id="username" placeholder="Username"><input id="password" type="password" placeholder="Password"><button onclick="login()">Login</button>
 
-<div class="header">
-
-<div class="logo-left">
-
-<img src="images/logo-yes-we-care-travels-1.png">
-
-<div class="company-text">
+<div id="msg"></div></div><!-- DASHBOARD --><div id="dashboard" style="display:none"><div class="header"><div class="logo-left"><img src="images/logo-yes-we-care-travels-1.png"><div class="company-text">
 <h2>Yes We Care Travels</h2>
 <p>Operated by P&R Hospitality Management Services</p>
-</div>
-
-</div>
-
-<div class="logo-right">
+</div></div><div class="logo-right">
 <img src="images/logo-pr-hospitality.png">
-</div>
+</div></div><div class="layout"><div class="sidebar" id="menu"><button onclick="loadPage('booking.html')" data-role="operator">Create Booking</button>
 
-</div>
+<button onclick="loadPage('customer-payment.html')" data-role="accounts">Customer Payment</button>
 
-<div class="layout">
+<button onclick="loadPage('assign-hotel.html')" data-role="operator">Assign Hotel</button>
 
-<div class="sidebar">
+<button onclick="loadPage('assign-vehicle.html')" data-role="operator">Assign Vehicle</button>
 
-<button onclick="loadPage('booking.html')">Create Booking</button>
+<button onclick="loadPage('supplier-payment.html')" data-role="accounts">Supplier Payment</button>
 
-<button onclick="loadPage('customer-payment.html')">Customer Payment</button>
+<button onclick="loadPage('booking-search.html')" data-role="operator">Search Booking</button>
 
-<button onclick="loadPage('assign-hotel.html')">Assign Hotel</button>
+<button onclick="loadPage('voucher.html')" data-role="operator">Generate Voucher</button>
 
-<button onclick="loadPage('assign-vehicle.html')">Assign Vehicle</button>  
+<button onclick="loadPage('report.html')" data-role="accounts">Reports</button>
 
-<button onclick="loadPage('supplier-payment.html')">Supplier Payment</button>
+<button class="logout" onclick="logout()">Logout</button>
 
-<button onclick="loadPage('booking-search.html')">Search Booking</button>  
+</div><div class="content"><iframe id="frame"></iframe></div></div></div><script>
 
-<button onclick="loadPage('voucher.html')">Generate Voucher</button>
+const API="https://script.google.com/macros/s/AKfycbyYeZMcv92PvMShxHL5e0HEmddLMFsZY4AnPZAlNrgXQVXLh5nlCCgsqHK5mXwYcGe7mw/exec";
 
-<button onclick="loadPage('report.html')">Reports</button>
+/* LOGIN */
 
-</div>
+function login(){
 
-<div class="content">
+const data={
 
-<iframe id="frame"></iframe>
+action:"login",
+username:document.getElementById("username").value,
+password:document.getElementById("password").value
 
-</div>
+};
 
-</div>
+fetch(API,{
+method:"POST",
+body:JSON.stringify(data)
+})
 
-<script>
+.then(res=>res.json())
+
+.then(res=>{
+
+if(res.status=="success"){
+
+sessionStorage.setItem("loggedIn","true");
+
+sessionStorage.setItem("admin",res.is_admin);
+sessionStorage.setItem("operator",res.is_operator);
+sessionStorage.setItem("accounts",res.is_accounts);
+
+startDashboard();
+
+}else{
+
+document.getElementById("msg").innerText="Invalid Login";
+
+}
+
+});
+
+}
+
+/* DASHBOARD START */
+
+function startDashboard(){
+
+document.getElementById("loginBox").style.display="none";
+document.getElementById("dashboard").style.display="block";
+
+applyPermissions();
+
+}
+
+/* PERMISSIONS */
+
+function applyPermissions(){
+
+const admin=sessionStorage.getItem("admin");
+const operator=sessionStorage.getItem("operator");
+const accounts=sessionStorage.getItem("accounts");
+
+const buttons=document.querySelectorAll("#menu button[data-role]");
+
+buttons.forEach(btn=>{
+
+let role=btn.getAttribute("data-role");
+
+if(admin=="yes"){
+btn.style.display="block";
+return;
+}
+
+if(role=="operator" && operator!="yes"){
+btn.style.display="none";
+}
+
+if(role=="accounts" && accounts!="yes"){
+btn.style.display="none";
+}
+
+});
+
+}
+
+/* LOAD PAGE */
 
 function loadPage(page){
 document.getElementById("frame").src = page;
 }
 
-</script>
+/* LOGOUT */
 
-</body>
+function logout(){
+
+sessionStorage.clear();
+
+location.reload();
+
+}
+
+/* DIRECT ACCESS BLOCK */
+
+if(sessionStorage.getItem("loggedIn")=="true"){
+startDashboard();
+}
+
+</script></body>
 </html>
