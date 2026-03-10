@@ -2,59 +2,35 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>Travel Booking Panel</title>
+<title>Create Booking</title>
 
 <style>
 
 body{
 font-family:Arial;
-background:#f4f6fb;
-margin:0;
-padding:0;
-}
-
-.header{
-background:#4b3fd6;
-color:white;
-padding:15px;
-font-size:20px;
-}
-
-.container{
-max-width:900px;
-margin:auto;
 background:white;
-padding:25px;
-margin-top:30px;
-border-radius:8px;
-box-shadow:0 10px 25px rgba(0,0,0,0.1);
+padding:20px;
 }
 
-label{
-font-weight:bold;
-display:block;
-margin-top:15px;
-}
-
-input,select{
+input{
 width:100%;
 padding:10px;
 margin-top:5px;
+margin-bottom:10px;
 border:1px solid #ddd;
-border-radius:6px;
+border-radius:5px;
 }
 
 .row{
 display:grid;
 grid-template-columns:1fr 1fr;
-gap:15px;
+gap:10px;
 }
 
 button{
 background:#f5b400;
 border:none;
 padding:12px;
-margin-top:20px;
 width:100%;
 font-weight:bold;
 cursor:pointer;
@@ -66,8 +42,7 @@ background:#e0a800;
 }
 
 #msg{
-margin-top:15px;
-font-size:14px;
+margin-top:10px;
 text-align:center;
 }
 
@@ -75,12 +50,6 @@ text-align:center;
 </head>
 
 <body>
-
-<div class="header">
-Travel Booking Panel
-</div>
-
-<div class="container">
 
 <h2>Create Booking</h2>
 
@@ -97,12 +66,12 @@ Travel Booking Panel
 
 <div>
 <label>Adults</label>
-<input type="number" id="adults" value="1">
+<input id="adults" type="number" value="1">
 </div>
 
 <div>
 <label>Children</label>
-<input type="number" id="children" value="0">
+<input id="children" type="number" value="0">
 </div>
 
 </div>
@@ -110,13 +79,13 @@ Travel Booking Panel
 <div class="row">
 
 <div>
-<label>Tour Start Date</label>
-<input type="date" id="tour_start">
+<label>Tour Start</label>
+<input id="tour_start" type="date">
 </div>
 
 <div>
-<label>Tour End Date</label>
-<input type="date" id="tour_end">
+<label>Tour End</label>
+<input id="tour_end" type="date">
 </div>
 
 </div>
@@ -134,73 +103,56 @@ Travel Booking Panel
 
 <div id="msg"></div>
 
-</div>
-
 <script>
 
-const API_URL = "https://script.google.com/macros/s/AKfycbyYeZMcv92PvMShxHL5e0HEmddLMFsZY4AnPZAlNrgXQVXLh5nlCCgsqHK5mXwYcGe7mw/exec";
+const API_URL="https://script.google.com/macros/s/AKfycbyYeZMcv92PvMShxHL5e0HEmddLMFsZY4AnPZAlNrgXQVXLh5nlCCgsqHK5mXwYcGe7mw/exec";
 
 function createBooking(){
 
-const msg = document.getElementById("msg");
+let msg=document.getElementById("msg");
 
 msg.innerHTML="Processing...";
 msg.style.color="blue";
 
-const data = {
+const packageCost=document.getElementById("package_cost").value;
+const advance=document.getElementById("advance_paid").value;
+
+const data={
 
 action:"createBooking",
 
 guest_name:document.getElementById("guest_name").value,
-
 mobile:document.getElementById("mobile").value,
-
 email:document.getElementById("email").value,
-
 adults:document.getElementById("adults").value,
-
 children:document.getElementById("children").value,
-
 tour_start:document.getElementById("tour_start").value,
-
 tour_end:document.getElementById("tour_end").value,
-
-package_cost:document.getElementById("package_cost").value,
-
-advance_paid:document.getElementById("advance_paid").value,
-
-balance:
-document.getElementById("package_cost").value -
-document.getElementById("advance_paid").value,
-
+package_cost:packageCost,
+advance_paid:advance,
+balance:packageCost-advance,
 notes:document.getElementById("notes").value
 
 };
 
 fetch(API_URL,{
-
 method:"POST",
-
 body:JSON.stringify(data)
-
 })
 
 .then(res=>res.json())
-
 .then(res=>{
 
 if(res.status=="success"){
 
 msg.style.color="green";
 
-msg.innerHTML=
-"Booking Created ✔<br>Booking ID: "+res.booking_id;
+msg.innerHTML="Booking Created ✔ <br> Booking ID: "+res.booking_id;
 
 }else{
 
 msg.style.color="red";
-
-msg.innerHTML="Error creating booking";
+msg.innerHTML="Booking failed";
 
 }
 
@@ -209,7 +161,6 @@ msg.innerHTML="Error creating booking";
 .catch(()=>{
 
 msg.style.color="red";
-
 msg.innerHTML="Server error";
 
 });
