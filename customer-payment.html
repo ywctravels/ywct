@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Customer Payment</title>
+
+<style>
+
+body{
+font-family:Arial;
+background:white;
+padding:20px;
+}
+
+h2{
+margin-bottom:20px;
+}
+
+label{
+display:block;
+font-weight:bold;
+margin-top:10px;
+}
+
+input,select{
+width:100%;
+padding:10px;
+margin-top:5px;
+border:1px solid #ddd;
+border-radius:6px;
+}
+
+.row{
+display:grid;
+grid-template-columns:1fr 1fr;
+gap:10px;
+}
+
+button{
+background:#f5b400;
+border:none;
+padding:12px;
+margin-top:20px;
+width:100%;
+font-weight:bold;
+cursor:pointer;
+border-radius:6px;
+}
+
+button:hover{
+background:#e0a800;
+}
+
+#msg{
+margin-top:15px;
+text-align:center;
+font-size:14px;
+}
+
+</style>
+
+</head>
+
+<body>
+
+<h2>Customer Payment</h2>
+
+<label>Booking ID</label>
+<input id="booking_id" placeholder="Enter Booking ID">
+
+<label>Amount</label>
+<input id="amount">
+
+<div class="row">
+
+<div>
+<label>Payment Mode</label>
+<select id="payment_mode">
+<option>Cash</option>
+<option>UPI</option>
+<option>Bank Transfer</option>
+<option>Card</option>
+</select>
+</div>
+
+<div>
+<label>Reference</label>
+<input id="reference">
+</div>
+
+</div>
+
+<label>Notes</label>
+<input id="notes">
+
+<button onclick="addPayment()">Add Payment</button>
+
+<div id="msg"></div>
+
+<script>
+
+const API_URL = "https://script.google.com/macros/s/AKfycbyYeZMcv92PvMShxHL5e0HEmddLMFsZY4AnPZAlNrgXQVXLh5nlCCgsqHK5mXwYcGe7mw/exec";
+
+function addPayment(){
+
+const msg = document.getElementById("msg");
+
+msg.innerHTML="Processing...";
+msg.style.color="blue";
+
+const data = {
+
+action:"addCustomerPayment",
+
+booking_id:document.getElementById("booking_id").value,
+
+amount:document.getElementById("amount").value,
+
+payment_mode:document.getElementById("payment_mode").value,
+
+reference:document.getElementById("reference").value,
+
+notes:document.getElementById("notes").value
+
+};
+
+fetch(API_URL,{
+
+method:"POST",
+
+body:JSON.stringify(data)
+
+})
+
+.then(res=>res.json())
+
+.then(res=>{
+
+if(res.status){
+
+msg.style.color="green";
+msg.innerHTML="Payment Added Successfully ✔";
+
+}else{
+
+msg.style.color="red";
+msg.innerHTML="Payment Failed";
+
+}
+
+})
+
+.catch(()=>{
+
+msg.style.color="red";
+msg.innerHTML="Server Error";
+
+});
+
+}
+
+</script>
+
+</body>
+</html>
