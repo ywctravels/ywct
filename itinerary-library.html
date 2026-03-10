@@ -1,0 +1,100 @@
+<!DOCTYPE html><html>
+<head>
+<meta charset="UTF-8">
+<title>Itinerary Library</title><style>
+
+body{
+font-family:Arial;
+background:#f4f6fb;
+padding:20px;
+}
+
+.container{
+background:white;
+padding:20px;
+border-radius:8px;
+}
+
+input,select{
+width:100%;
+padding:8px;
+margin-top:8px;
+}
+
+button{
+margin-top:10px;
+padding:10px;
+background:#4b3fd6;
+color:white;
+border:none;
+cursor:pointer;
+}
+
+table{
+width:100%;
+margin-top:20px;
+border-collapse:collapse;
+}
+
+th,td{
+border:1px solid #ddd;
+padding:8px;
+}
+
+th{
+background:#4b3fd6;
+color:white;
+}
+
+</style></head><body><div class="container"><h2>Itinerary Library</h2><label>City</label>
+<select id="city"></select>
+
+<label>Place</label>
+<input id="place">
+
+<label>Title</label>
+<input id="title">
+
+<label>Description</label>
+<input id="description">
+
+<button onclick="savePlace()">Save</button>
+
+<table><thead>
+<tr>
+<th>City</th>
+<th>Place</th>
+<th>Title</th>
+<th>Edit</th>
+<th>Delete</th>
+</tr>
+</thead><tbody id="list"></tbody></table></div><script>
+
+const API="YOUR_API_URL";
+
+function savePlace(){
+
+fetch(API,{
+method:"POST",
+body:JSON.stringify({
+
+action:"savePlace",
+city:city.value,
+place:place.value,
+title:title.value,
+description:description.value
+
+})
+
+}).then(()=>{
+
+alert("Saved");
+
+loadPlaces();
+
+});
+
+}
+
+</script></body>
+</html>
