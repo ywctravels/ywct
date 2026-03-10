@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Travel Booking Panel</title>
+
+<style>
+
+body{
+font-family:Arial;
+background:#f4f6fb;
+margin:0;
+padding:0;
+}
+
+.header{
+background:#4b3fd6;
+color:white;
+padding:15px;
+font-size:20px;
+}
+
+.container{
+max-width:900px;
+margin:auto;
+background:white;
+padding:25px;
+margin-top:30px;
+border-radius:8px;
+box-shadow:0 10px 25px rgba(0,0,0,0.1);
+}
+
+label{
+font-weight:bold;
+display:block;
+margin-top:15px;
+}
+
+input,select{
+width:100%;
+padding:10px;
+margin-top:5px;
+border:1px solid #ddd;
+border-radius:6px;
+}
+
+.row{
+display:grid;
+grid-template-columns:1fr 1fr;
+gap:15px;
+}
+
+button{
+background:#f5b400;
+border:none;
+padding:12px;
+margin-top:20px;
+width:100%;
+font-weight:bold;
+cursor:pointer;
+border-radius:6px;
+}
+
+button:hover{
+background:#e0a800;
+}
+
+#msg{
+margin-top:15px;
+font-size:14px;
+text-align:center;
+}
+
+</style>
+</head>
+
+<body>
+
+<div class="header">
+Travel Booking Panel
+</div>
+
+<div class="container">
+
+<h2>Create Booking</h2>
+
+<label>Guest Name</label>
+<input id="guest_name">
+
+<label>Mobile</label>
+<input id="mobile">
+
+<label>Email</label>
+<input id="email">
+
+<div class="row">
+
+<div>
+<label>Adults</label>
+<input type="number" id="adults" value="1">
+</div>
+
+<div>
+<label>Children</label>
+<input type="number" id="children" value="0">
+</div>
+
+</div>
+
+<div class="row">
+
+<div>
+<label>Tour Start Date</label>
+<input type="date" id="tour_start">
+</div>
+
+<div>
+<label>Tour End Date</label>
+<input type="date" id="tour_end">
+</div>
+
+</div>
+
+<label>Total Package Cost</label>
+<input id="package_cost">
+
+<label>Advance Paid</label>
+<input id="advance_paid">
+
+<label>Notes</label>
+<input id="notes">
+
+<button onclick="createBooking()">Create Booking</button>
+
+<div id="msg"></div>
+
+</div>
+
+<script>
+
+const API_URL = "YOUR_APPS_SCRIPT_URL_HERE";
+
+function createBooking(){
+
+const msg = document.getElementById("msg");
+
+msg.innerHTML="Processing...";
+msg.style.color="blue";
+
+const data = {
+
+action:"createBooking",
+
+guest_name:document.getElementById("guest_name").value,
+
+mobile:document.getElementById("mobile").value,
+
+email:document.getElementById("email").value,
+
+adults:document.getElementById("adults").value,
+
+children:document.getElementById("children").value,
+
+tour_start:document.getElementById("tour_start").value,
+
+tour_end:document.getElementById("tour_end").value,
+
+package_cost:document.getElementById("package_cost").value,
+
+advance_paid:document.getElementById("advance_paid").value,
+
+balance:
+document.getElementById("package_cost").value -
+document.getElementById("advance_paid").value,
+
+notes:document.getElementById("notes").value
+
+};
+
+fetch(API_URL,{
+
+method:"POST",
+
+body:JSON.stringify(data)
+
+})
+
+.then(res=>res.json())
+
+.then(res=>{
+
+if(res.status=="success"){
+
+msg.style.color="green";
+
+msg.innerHTML=
+"Booking Created ✔<br>Booking ID: "+res.booking_id;
+
+}else{
+
+msg.style.color="red";
+
+msg.innerHTML="Error creating booking";
+
+}
+
+})
+
+.catch(()=>{
+
+msg.style.color="red";
+
+msg.innerHTML="Server error";
+
+});
+
+}
+
+</script>
+
+</body>
+</html>
