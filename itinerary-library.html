@@ -1,122 +1,153 @@
-<!DOCTYPE html>
-<html>
+<!DOCTYPE html><html>
+  
 <head>
+  
 <meta charset="UTF-8">
-<title>Itinerary Builder</title>
+  
+<title>Itinerary Builder</title><style>
+  
 
-<style>
+  
 body{
+  
 font-family:Arial;
+  
 background:#f4f6fb;
+  
 padding:20px;
+  
 }
+  
 
+  
 table{
+  
 width:100%;
+  
 border-collapse:collapse;
+  
 margin-top:20px;
+  
 }
+  
 
+  
 th,td{
+  
 border:1px solid #ddd;
+  
 padding:8px;
+  
 }
+  
 
+  
 th{
+  
 background:#4b3fd6;
+  
 color:white;
+  
 }
-</style>
+  
 
-</head>
-
-<body>
-
-<h2>Create Itinerary</h2>
-
-<label>Select Package</label>
-<select id="packageSelect"></select>
-
-<label>Start Date</label>
+  
+</style></head><body><h2>Create Itinerary</h2><label>Start Date</label>
+  
 <input type="date" id="startDate">
+  
 
+  
 <label>Number of Days</label>
+  
 <input type="number" id="days">
+  
 
+  
 <button onclick="generate()">Generate</button>
+  
 
-<table id="table">
-<thead>
+  
+<table id="table"><thead>
+  
 <tr>
+  
 <th>Day</th>
+  
 <th>Date</th>
+  
 <th>City</th>
+  
 <th>Place</th>
+  
 <th>Stay</th>
+  
 </tr>
-</thead>
-<tbody></tbody>
-</table>
+  
+</thead><tbody></tbody></table><script>
+  
 
-<script>
-
-const API = "https://script.google.com/macros/s/AKfycbw9YNYK61XcpxxlAoUJtuyT0AVOKvLWpIkPx4pW0U4baS-Ze9oFc_aTaIUnQuFDO6in/exec";
-
-/* LOAD PACKAGES */
-
-window.onload = loadPackages;
-
-function loadPackages(){
-
-fetch(API)
-.then(res=>res.json())
-.then(data=>{
-
-let packages = [...new Set(data.map(d => d.tour_name))];
-
-let html = `<option value="">Select Package</option>`;
-
-packages.forEach(p=>{
-html += `<option value="${p}">${p}</option>`;
-});
-
-document.getElementById("packageSelect").innerHTML = html;
-
-});
-
-}
-
-/* GENERATE TABLE */
-
+  
 function generate(){
+  
 
-let start = new Date(document.getElementById("startDate").value);
-let days = document.getElementById("days").value;
+  
+let start = new Date(startDate.value);
+  
 
+  
+let days = days.value;
+  
+
+  
 let html="";
+  
 
+  
 for(let i=0;i<days;i++){
+  
 
+  
 let d=new Date(start);
+  
+
+  
 d.setDate(start.getDate()+i);
+  
 
+  
 html+=`
+  
 <tr>
+  
 <td>Day ${i+1}</td>
+  
 <td>${d.toDateString()}</td>
+  
 <td><select></select></td>
+  
 <td><select></select></td>
+  
 <td><input></td>
+  
 </tr>
+  
 `;
+  
 
+  
 }
+  
 
+  
 document.querySelector("#table tbody").innerHTML=html;
+  
 
+  
 }
+  
 
-</script>
-
-</body>
-</html>***********************************************************************************************************************************************************************
+  
+</script></body>
+  
+</html>
